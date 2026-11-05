@@ -13,6 +13,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.questmvvm_0138.viewmodel.SiswaViewModel
+import com.example.questmvvm_0138.model.DataJK.JenisK
+import com.example.questmvvm_0138.view.FormSiswa
+import com.example.questmvvm_0138.view.TampilSiswa
+import androidx.compose.runtime.collectAsState
 
 enum class Navigasi {
     Formulir,
@@ -50,7 +54,7 @@ fun SiswaApp(
             composable(route = Navigasi.Detail.name){
                 TampilSiswa(
                     // edit 5 : parameter statusUISiswa
-                    statusUISiswa = uiState.value,
+                    statusUiSiswa = uiState.value,
                     onBackButtonClicked = { cancelAndBackToFormulir(navController) }
                 )
             }
