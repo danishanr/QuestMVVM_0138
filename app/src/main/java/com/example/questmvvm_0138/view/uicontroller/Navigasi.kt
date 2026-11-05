@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.internal.composableLambda
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -25,35 +26,40 @@ fun SiswaApp(
     viewModel: SiswaViewModel = viewModel(),
     navController : NavController = rememberNavController()
 ){
-    Scaffold { isiRuang->
+    Scaffold { isiRuang ->
         // edit 2 : tambahkan variabel uiState
         val uiState = viewModel.statusUI.collectAsState()
         NavHost(
             navController = navController,
             startDestination = Navigasi.Formulir.name,
 
-            modifier = Modifier.padding(isiRuang){
-                composable(route = Navigasi.Formulir.name){
-                    // edit 3 : tambahkan variabel konteks
-                    val konteks = LocalContext.current
-                    FormSiswa(
-                        // edit 4 : parameter pilihanJK dan onSubmitButtonClicked
-                        pilihanJK = JenisK.map { id -> konteks.resources.getString(id) },
-                        onSubmitButtonClicked = {
-                            viewModel.setSiswa(it)
-                            navController.navigate(Navigasi.Detail.name)
-                        }
-                    )
-                }
-                composable(route = Navigasi.Detail.name){
-                    TampilSiswa(
-                        // edit 5 : parameter statusUISiswa
-                        statusUISiswa = uiState.value,
-                        onBackButtonClicked = { cancelAndBackToFormulir(navController) }
-                    )
-                }
+            modifier = Modifier.padding(isiRuang)
+        ) {
+            composable(route = Navigasi.Formulir.name) {
+                // edit 3 : tambahkan variabel konteks
+                val konteks = LocalContext.current
+                FormSiswa(
+                    // edit 4 : parameter pilihanJK dan onSubmitButtonClicked
+                    pilihanJK = JenisK.map { id -> konteks.resources.getString(id) },
+                    onSubmitButtonClicked = {
+                        viewModel.setSiswa(it)
+                        navController.navigate(Navigasi.Detail.name)
+                    }
+                )
             }
-        )
+            composable(route = Navigasi.Detail.name) {
+                TampilSiswa(
+                    // edit 5 : parameter statusUISiswa
+                    statusUISiswa = uiState.value,
+                    onBackButtonClicked = { cancelAndBackToFormulir(navController) }
+                )
+            }
+        }
     }
+}
+private fun cancelAndBackToFormulir(
+    navController: NavController
+){
+    navController.popBackStack(Navigasi.Formulir.name, inclusive = false)
 }
 
