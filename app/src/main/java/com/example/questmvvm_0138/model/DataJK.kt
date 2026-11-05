@@ -1,9 +1,9 @@
 package com.example.questmvvm_0138.model
 
-import androidx.compose.material3.R
+import com.example.questmvvm_0138.R
 
 object DataJK {
-    val JenisJK= listOf(
+    val JenisK= listOf(
         R.string.laki,
         R.string.wanita
     )
